@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FacultyOS - Settings</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+        /* Floating AI Button Styles */
+        .floating-ai-btn {
+            box-shadow: 0 4px 14px 0 rgba(21, 128, 61, 0.39);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .floating-ai-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(21, 128, 61, 0.23);
+        }
+
+        /* Slide Panels Animations */
+        .ai-chat-panel,
+        .user-sidebar-panel {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Toggle Switch Custom Styles */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #15803d;
+        }
+
+        .toggle-checkbox:checked+.toggle-label {
+            background-color: #15803d;
+        }
+
+        /* Smooth scrolling for inner page links */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+
+<body class="flex h-screen overflow-hidden text-gray-800">
+
+    <!-- Left Sidebar (Persistent) -->
+    <aside class="w-64 bg-white border-r border-gray-200 flex flex-col hidden md:flex z-10 shrink-0">
+        <!-- Logo Area -->
+        <div class="h-16 flex items-center px-6 border-b border-gray-100">
+            <div class="flex items-center gap-2 text-green-700 font-bold text-xl tracking-tight">
+                <i class="ph-fill ph-graduation-cap text-2xl"></i>
+                FacultyOS
+            </div>
+        </div>
+
+        <!-- Navigation (General section removed as requested) -->
+        <div class="flex-1 overflow-y-auto py-4 px-3 flex flex-col gap-6">
+            <div>
+                <div class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Menu</div>
+                <nav class="space-y-1">
+                    <a href="index.html"
+                        class="flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-50 hover:text-green-700 rounded-lg font-medium transition-colors">
+                        <i class="ph ph-squares-four text-lg"></i>
+                        Dashboard
+                    </a>
+                    <a href="routine.html"
+                        class="flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-50 hover:text-green-700 rounded-lg font-medium transition-colors">
+                        <i class="ph ph-calendar-blank text-lg"></i>
+                        My Routine
+                    </a>
+                    <a href="aust-intel.html"
+                        class="flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-50 hover:text-green-700 rounded-lg font-medium transition-colors">
+                        <i class="ph ph-megaphone text-lg"></i>
+                        AUST Intel
+                    </a>
+                    <a href="#"
+                        class="flex items-center justify-between px-3 py-2.5 text-gray-600 hover:bg-gray-50 hover:text-green-700 rounded-lg font-medium transition-colors">
+                        <div class="flex items-center gap-3">
+                            <i class="ph ph-warning-circle text-lg"></i>
+                            Conflicts & Alerts
+                        </div>
+                        <span class="bg-red-100 text-red-600 text-xs font-bold px-2 py-0.5 rounded-full">1</span>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden relative">
+
+        <!-- Top Header -->
+        <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shrink-0">
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-gray-500 hover:text-gray-700">
+                <i class="ph ph-list text-2xl"></i>
+            </button>
+
+            <!-- Search Bar -->
+            <div class="flex-1 max-w-xl hidden md:flex items-center">
+                <div class="relative w-full">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="ph ph-magnifying-glass text-gray-400"></i>
+                    </div>
+                    <input type="text"
+                        class="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-lg leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-1 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors"
+                        placeholder="Ask FacultyOS or search resources (Ctrl+K)">
+                    <div class="absolute inset-y-0 right-0 pr-2 flex items-center">
+                        <kbd
+                            class="hidden sm:inline-block border border-gray-200 rounded px-1.5 text-xs font-sans font-medium text-gray-400 bg-white">⌘K</kbd>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Actions -->
+            <div class="flex items-center gap-4 ml-auto">
+                <button class="text-gray-400 hover:text-gray-600 relative">
+                    <i class="ph ph-envelope-simple text-xl"></i>
+                </button>
+                <button class="text-gray-400 hover:text-gray-600 relative">
+                    <i class="ph ph-bell text-xl"></i>
+                </button>
+                <div class="h-8 w-px bg-gray-200 mx-2"></div>
+                <!-- User Profile Trigger -->
+                <div id="userProfileBtn"
+                    class="flex items-center gap-3 cursor-pointer hover:bg-gray-50 p-1.5 rounded-lg transition-colors">
+                    <img class="h-9 w-9 rounded-full object-cover border border-gray-200"
+                        src="https://ui-avatars.com/api/?name=Dr.+Rahman&background=0D8ABC&color=fff" alt="User avatar">
+                    <div class="hidden sm:block text-sm">
+                        <p class="font-semibold text-gray-700 leading-tight">Dr. Rahman</p>
+                        <p class="text-xs text-gray-500">Dept. of CSE</p>
+                    </div>
+                    <i class="ph ph-caret-down text-gray-400 text-sm hidden sm:block"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Settings Content Area -->
+        <div class="flex-1 overflow-y-auto bg-[#f8fafc] p-6 scroll-smooth">
+            <div class="max-w-5xl mx-auto w-full pb-20">
+
+                <!-- Page Breadcrumb & Header -->
+                <div class="mb-8">
+                    <nav class="text-sm font-medium text-gray-500 mb-1">
+                        <ol class="list-none p-0 inline-flex">
+                            <li class="flex items-center">
+                                <span class="text-gray-700">Account</span>
+                                <i class="ph ph-caret-right mx-2 text-xs"></i>
+                            </li>
+                            <li class="flex items-center">
+                                <span class="text-gray-900 font-semibold">Settings</span>
+                            </li>
+                        </ol>
+                    </nav>
+                    <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">Settings</h1>
+                    <p class="text-sm text-gray-500 mt-1">Manage your platform preferences, integrations, and security.
+                    </p>
+                </div>
+
+                <!-- Settings Layout: Left Inner Menu + Right Content -->
+                <div class="flex flex-col md:flex-row gap-8">
+
+                    <!-- Left Inner Navigation -->
+                    <div class="w-full md:w-64 shrink-0">
+                        <nav
+                            class="sticky top-6 flex flex-row md:flex-col gap-1 overflow-x-auto md:overflow-visible pb-4 md:pb-0 hide-scrollbar">
+                            <a href="#preferences"
+                                class="px-4 py-2.5 text-sm font-medium rounded-lg text-green-700 bg-green-50 transition-colors whitespace-nowrap">
+                                General Preferences
+                            </a>
+                            <a href="#notifications"
+                                class="px-4 py-2.5 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-100 transition-colors whitespace-nowrap">
+                                Notifications
+                            </a>
+                            <a href="#integrations"
+                                class="px-4 py-2.5 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-100 transition-colors whitespace-nowrap">
+                                Integrations
+                            </a>
+                            <a href="#security"
+                                class="px-4 py-2.5 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-100 transition-colors whitespace-nowrap">
+                                Password & Security
+                            </a>
+                        </nav>
+                    </div>
+
+                    <!-- Right Settings Panels -->
+                    <div class="flex-1 space-y-8">
+
+                        <!-- Section: Preferences -->
+                        <section id="preferences" class="scroll-mt-6">
+                            <h2 class="text-lg font-bold text-gray-900 mb-4 border-b border-gray-200 pb-2">General
+                                Preferences</h2>
+                            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-6">
+
+                                <!-- App Theme -->
+                                <div>
+                                    <h3 class="text-sm font-semibold text-gray-800 mb-1">Appearance</h3>
+                                    <p class="text-xs text-gray-500 mb-4">Select or customize your UI theme.</p>
+                                    <div class="grid grid-cols-3 gap-3">
+                                        <button
+                                            class="border-2 border-green-600 rounded-lg p-3 flex flex-col items-center gap-2 bg-green-50/30">
+                                            <i class="ph ph-sun text-2xl text-green-700"></i>
+                                            <span class="text-xs font-medium text-green-800">Light</span>
+                                        </button>
+                                        <button
+                                            class="border border-gray-200 rounded-lg p-3 flex flex-col items-center gap-2 hover:bg-gray-50 transition-colors">
+                                            <i class="ph ph-moon text-2xl text-gray-500"></i>
+                                            <span class="text-xs font-medium text-gray-700">Dark</span>
+                                        </button>
+                                        <button
+                                            class="border border-gray-200 rounded-lg p-3 flex flex-col items-center gap-2 hover:bg-gray-50 transition-colors">
+                                            <i class="ph ph-desktop text-2xl text-gray-500"></i>
+                                            <span class="text-xs font-medium text-gray-700">System</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <hr class="border-gray-100">
+
+                                <!-- Default View -->
+                                <div>
+                                    <h3 class="text-sm font-semibold text-gray-800 mb-3">Startup Screen</h3>
+                                    <div class="space-y-3">
+                                        <label class="flex items-center gap-3 cursor-pointer">
+                                            <input type="radio" name="start_screen"
+                                                class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300"
+                                                checked>
+                                            <span class="text-sm text-gray-700">Dashboard (Overview)</span>
+                                        </label>
+                                        <label class="flex items-center gap-3 cursor-pointer">
+                                            <input type="radio" name="start_screen"
+                                                class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300">
+                                            <span class="text-sm text-gray-700">My Routine</span>
+                                        </label>
+                                        <label class="flex items-center gap-3 cursor-pointer">
+                                            <input type="radio" name="start_screen"
+                                                class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300">
+                                            <span class="text-sm text-gray-700">AUST Intelligence Feed</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Section: Notifications -->
+                        <section id="notifications" class="scroll-mt-6">
+                            <h2 class="text-lg font-bold text-gray-900 mb-4 border-b border-gray-200 pb-2">Notifications
+                            </h2>
+                            <div class="bg-white rounded-xl shadow-sm border border-gray-200 divide-y divide-gray-100">
+
+                                <div class="p-6 flex items-center justify-between">
+                                    <div>
+                                        <h3 class="text-sm font-semibold text-gray-800">Routine Conflict Alerts</h3>
+                                        <p class="text-xs text-gray-500 mt-1">Get instant browser alerts when a notice
+                                            impacts your schedule.</p>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" class="sr-only peer" checked>
+                                        <div
+                                            class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-700">
+                                        </div>
+                                    </label>
+                                </div>
+
+                                <div class="p-6 flex items-center justify-between">
+                                    <div>
+                                        <h3 class="text-sm font-semibold text-gray-800">Daily Digest Email</h3>
+                                        <p class="text-xs text-gray-500 mt-1">Receive an AI-summarized brief of your
+                                            next day at 8:00 PM.</p>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" class="sr-only peer" checked>
+                                        <div
+                                            class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-700">
+                                        </div>
+                                    </label>
+                                </div>
+
+                                <div class="p-6 flex items-center justify-between">
+                                    <div>
+                                        <h3 class="text-sm font-semibold text-gray-800">Departmental Announcements</h3>
+                                        <p class="text-xs text-gray-500 mt-1">Notify me of general notices from my
+                                            department.</p>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" class="sr-only peer">
+                                        <div
+                                            class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-700">
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Section: Integrations -->
+                        <section id="integrations" class="scroll-mt-6">
+                            <h2 class="text-lg font-bold text-gray-900 mb-4 border-b border-gray-200 pb-2">Connected
+                                Calendars</h2>
+                            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-4">
+                                <p class="text-sm text-gray-600 mb-4">Sync your FacultyOS routine with external calendar
+                                    providers so you never miss a class or duty.</p>
+
+                                <!-- Google Calendar -->
+                                <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                                    <div class="flex items-center gap-4">
+                                        <div
+                                            class="h-10 w-10 bg-gray-50 rounded flex items-center justify-center border border-gray-100">
+                                            <i class="ph-fill ph-google-logo text-xl text-blue-500"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-sm font-semibold text-gray-800">Google Calendar</h3>
+                                            <p class="text-xs text-green-600 font-medium">Connected as
+                                                shafiq.cse@aust.edu</p>
+                                        </div>
+                                    </div>
+                                    <button
+                                        class="px-3 py-1.5 border border-gray-300 text-gray-600 text-xs font-medium rounded-md hover:bg-gray-50 transition-colors">
+                                        Disconnect
+                                    </button>
+                                </div>
+
+                                <!-- Outlook / Office 365 -->
+                                <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                                    <div class="flex items-center gap-4">
+                                        <div
+                                            class="h-10 w-10 bg-gray-50 rounded flex items-center justify-center border border-gray-100">
+                                            <i class="ph-fill ph-microsoft-logo text-xl text-blue-600"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-sm font-semibold text-gray-800">Microsoft Outlook</h3>
+                                            <p class="text-xs text-gray-500">Not connected</p>
+                                        </div>
+                                    </div>
+                                    <button
+                                        class="px-3 py-1.5 bg-green-50 text-green-700 border border-green-200 text-xs font-medium rounded-md hover:bg-green-100 transition-colors">
+                                        Connect
+                                    </button>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Section: Security -->
+                        <section id="security" class="scroll-mt-6 pb-12">
+                            <h2 class="text-lg font-bold text-gray-900 mb-4 border-b border-gray-200 pb-2">Password &
+                                Security</h2>
+                            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-6">
+
+                                <div>
+                                    <h3 class="text-sm font-semibold text-gray-800 mb-4">Change Password</h3>
+                                    <form class="space-y-4 max-w-sm">
+                                        <div>
+                                            <label class="block text-xs font-medium text-gray-700 mb-1">Current
+                                                Password</label>
+                                            <input type="password"
+                                                class="block w-full px-3 py-2 border border-gray-200 rounded-md text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500">
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-medium text-gray-700 mb-1">New
+                                                Password</label>
+                                            <input type="password"
+                                                class="block w-full px-3 py-2 border border-gray-200 rounded-md text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500">
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-medium text-gray-700 mb-1">Confirm New
+                                                Password</label>
+                                            <input type="password"
+                                                class="block w-full px-3 py-2 border border-gray-200 rounded-md text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500">
+                                        </div>
+                                        <button type="button"
+                                            class="px-4 py-2 bg-green-700 text-white text-sm font-medium rounded-lg hover:bg-green-800 shadow-sm transition-colors">
+                                            Update Password
+                                        </button>
+                                    </form>
+                                </div>
+
+                                <hr class="border-gray-100">
+
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h3 class="text-sm font-semibold text-gray-800 flex items-center gap-2">
+                                            Two-Factor Authentication (2FA) <span
+                                                class="bg-gray-100 text-gray-500 text-[10px] uppercase font-bold px-1.5 py-0.5 rounded">Off</span>
+                                        </h3>
+                                        <p class="text-xs text-gray-500 mt-1">Add an extra layer of security to your
+                                            account.</p>
+                                    </div>
+                                    <button
+                                        class="px-4 py-2 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 shadow-sm transition-colors">
+                                        Enable 2FA
+                                    </button>
+                                </div>
+                            </div>
+                        </section>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Floating AI Assistant Button -->
+        <button id="aiToggleBtn"
+            class="floating-ai-btn absolute bottom-6 right-6 h-14 w-40 bg-gradient-to-r from-green-700 to-green-800 rounded-full flex items-center justify-center gap-2 text-white shadow-lg cursor-pointer z-50 group hover:pr-4">
+            <i class="ph-fill ph-robot text-2xl group-hover:rotate-12 transition-transform"></i>
+            <span class="font-semibold text-sm">FacultyOS</span>
+        </button>
+
+    </main>
+
+    <!-- AI Assistant Slide-out Panel -->
+    <div id="aiChatPanel"
+        class="ai-chat-panel fixed inset-y-0 right-0 w-full md:w-[400px] bg-white shadow-2xl border-l border-gray-200 z-50 flex flex-col pt-16 md:pt-0 translate-x-full">
+        <!-- Panel Header -->
+        <div class="h-16 border-b border-gray-100 flex items-center justify-between px-5 bg-gray-50/50 shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center text-green-700">
+                    <i class="ph-fill ph-robot text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="font-bold text-gray-800 leading-none">FacultyOS</h2>
+                    <p
+                        class="text-[10px] text-green-600 font-medium flex items-center gap-1 uppercase tracking-wider mt-1">
+                        <span class="h-1.5 w-1.5 rounded-full bg-green-500 inline-block"></span> Online
+                    </p>
+                </div>
+            </div>
+            <button id="closeAiBtn"
+                class="text-gray-400 hover:text-gray-600 p-1.5 rounded-md hover:bg-gray-100 transition-colors">
+                <i class="ph ph-x text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Chat Area -->
+        <div class="flex-1 overflow-y-auto p-4 space-y-4 bg-white">
+            <div class="flex gap-3">
+                <div
+                    class="h-6 w-6 rounded-full bg-green-100 flex items-center justify-center text-green-700 shrink-0 mt-1">
+                    <i class="ph-fill ph-robot text-xs"></i>
+                </div>
+                <div
+                    class="bg-gray-50 rounded-2xl rounded-tl-none px-4 py-3 text-sm text-gray-700 border border-gray-100 max-w-[85%]">
+                    <p>I can help you adjust your notification preferences or sync your schedule to Google Calendar.</p>
+                </div>
+            </div>
+            <div class="pl-9 pr-4 flex flex-wrap gap-2">
+                <button
+                    class="text-xs px-3 py-1.5 bg-white border border-gray-200 rounded-full text-gray-600 hover:border-green-300 hover:text-green-700 transition-colors shadow-sm">How
+                    do I sync to Outlook?</button>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="p-4 border-t border-gray-100 bg-white shrink-0 pb-6">
+            <div class="relative flex items-end gap-2">
+                <div class="relative flex-1">
+                    <textarea rows="1"
+                        class="w-full bg-gray-50 border border-gray-200 rounded-xl pl-4 pr-10 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 resize-none max-h-32"
+                        placeholder="Ask FacultyOS..." style="min-height: 44px;"></textarea>
+                </div>
+                <button
+                    class="h-[44px] w-[44px] rounded-xl bg-green-700 text-white flex items-center justify-center hover:bg-green-800 transition-colors shrink-0 shadow-sm">
+                    <i class="ph-fill ph-paper-plane-right text-lg"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Profile Slide-out Sidebar -->
+    <div id="userSidebarPanel"
+        class="user-sidebar-panel fixed inset-y-0 right-0 w-72 bg-white shadow-2xl border-l border-gray-200 z-[60] flex flex-col translate-x-full">
+        <!-- Sidebar Header -->
+        <div class="h-16 border-b border-gray-100 flex items-center justify-between px-5 bg-gray-50 shrink-0">
+            <h2 class="font-bold text-gray-800 text-lg">Account</h2>
+            <button id="closeUserSidebarBtn"
+                class="text-gray-400 hover:text-gray-600 p-1.5 rounded-md hover:bg-gray-200 transition-colors">
+                <i class="ph ph-x text-xl"></i>
+            </button>
+        </div>
+
+        <!-- User Info Header -->
+        <div class="p-6 border-b border-gray-100 flex flex-col items-center text-center">
+            <img class="h-20 w-20 rounded-full object-cover border-4 border-white shadow-md mb-3 bg-white"
+                src="https://ui-avatars.com/api/?name=Dr.+Rahman&background=0D8ABC&color=fff" alt="User avatar">
+            <h3 class="font-bold text-gray-900 text-lg">Dr. Shafiqur Rahman</h3>
+            <p class="text-sm text-gray-500 font-medium">Associate Professor</p>
+            <p class="text-xs text-gray-400 mt-1">shafiq.cse@aust.edu</p>
+        </div>
+
+        <!-- Navigation Options -->
+        <div class="p-4 flex-1 overflow-y-auto">
+            <nav class="space-y-1.5">
+                <a href="profile.html"
+                    class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-green-700 rounded-xl font-medium transition-colors">
+                    <i class="ph ph-user text-xl"></i>
+                    My Profile
+                </a>
+                <!-- Active Settings link -->
+                <a href="settings.html"
+                    class="flex items-center gap-3 px-4 py-3 bg-green-50 text-green-700 rounded-xl font-medium transition-colors">
+                    <i class="ph-fill ph-gear text-xl"></i>
+                    Settings
+                </a>
+                <a href="#"
+                    class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-green-700 rounded-xl font-medium transition-colors">
+                    <i class="ph ph-question text-xl"></i>
+                    Help
+                </a>
+            </nav>
+        </div>
+
+        <!-- Logout -->
+        <div class="p-4 border-t border-gray-100 bg-gray-50/50">
+            <a href="login.html"
+                class="flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 hover:text-red-700 rounded-xl font-medium transition-colors w-full">
+                <i class="ph ph-sign-out text-xl"></i>
+                Logout
+            </a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const aiToggleBtn = document.getElementById('aiToggleBtn');
+            const closeAiBtn = document.getElementById('closeAiBtn');
+            const aiChatPanel = document.getElementById('aiChatPanel');
+
+            const userProfileBtn = document.getElementById('userProfileBtn');
+            const closeUserSidebarBtn = document.getElementById('closeUserSidebarBtn');
+            const userSidebarPanel = document.getElementById('userSidebarPanel');
+
+            // Nav link highlight logic based on scroll position
+            const navLinks = document.querySelectorAll('nav a[href^="#"]');
+            const sections = Array.from(navLinks).map(link => document.querySelector(link.getAttribute('href')));
+
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.5 };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        navLinks.forEach(link => {
+                            if (link.getAttribute('href') === `#${id}`) {
+                                link.classList.add('text-green-700', 'bg-green-50');
+                                link.classList.remove('text-gray-600', 'hover:bg-gray-100');
+                            } else {
+                                link.classList.remove('text-green-700', 'bg-green-50');
+                                link.classList.add('text-gray-600', 'hover:bg-gray-100');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(sec => { if (sec) observer.observe(sec); });
+
+
+            // Toggle Panels Logic
+            function toggleAiPanel() {
+                aiChatPanel.classList.toggle('translate-x-full');
+                if (!userSidebarPanel.classList.contains('translate-x-full')) {
+                    userSidebarPanel.classList.add('translate-x-full');
+                }
+            }
+
+            function toggleUserSidebar() {
+                userSidebarPanel.classList.toggle('translate-x-full');
+                if (!aiChatPanel.classList.contains('translate-x-full')) {
+                    aiChatPanel.classList.add('translate-x-full');
+                }
+            }
+
+            aiToggleBtn.addEventListener('click', toggleAiPanel);
+            closeAiBtn.addEventListener('click', toggleAiPanel);
+
+            if (userProfileBtn) userProfileBtn.addEventListener('click', toggleUserSidebar);
+            if (closeUserSidebarBtn) closeUserSidebarBtn.addEventListener('click', toggleUserSidebar);
+
+            // Auto-resize textarea
+            const textarea = document.querySelector('textarea');
+            textarea.addEventListener('input', function () {
+                this.style.height = '44px'; // Reset
+                this.style.height = (this.scrollHeight) + 'px';
+            });
+        });
+    </script>
+</body>
+
+</html>
