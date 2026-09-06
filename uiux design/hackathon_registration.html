@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FacultyOS - Faculty Registration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+        }
+
+        /* Custom Input Styling */
+        .input-field {
+            transition: all 0.2s ease;
+        }
+
+        .input-field:focus-within {
+            transform: translateY(-1px);
+        }
+
+        /* Abstract Background Pattern for Left Pane */
+        .bg-pattern {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex antialiased text-gray-800">
+
+    <!-- Left Pane: Branding & Value Prop (Hidden on mobile) -->
+    <div
+        class="hidden lg:flex lg:w-5/12 bg-green-800 relative overflow-hidden flex-col justify-between p-12 text-white">
+        <!-- Abstract Background -->
+        <div class="absolute inset-0 bg-gradient-to-br from-green-700 to-green-900 z-0"></div>
+        <div class="absolute inset-0 bg-pattern opacity-30 z-0"></div>
+
+        <!-- Decorative glowing orbs -->
+        <div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 rounded-full bg-green-500 blur-3xl opacity-20"></div>
+        <div class="absolute bottom-0 left-0 -ml-16 -mb-16 w-80 h-80 rounded-full bg-blue-500 blur-3xl opacity-20">
+        </div>
+
+        <!-- Content relative on top of background -->
+        <div class="relative z-10">
+            <div class="flex items-center gap-2 font-bold text-2xl tracking-tight mb-16">
+                <div class="bg-white text-green-800 p-2 rounded-lg shadow-lg">
+                    <i class="ph-fill ph-graduation-cap text-2xl"></i>
+                </div>
+                FacultyOS
+            </div>
+
+            <div class="space-y-6 max-w-md">
+                <h1 class="text-4xl font-bold leading-tight">
+                    Your intelligent <br>
+                    <span class="text-green-300">academic co-pilot.</span>
+                </h1>
+                <p class="text-green-100/80 text-lg leading-relaxed">
+                    Join AUST's exclusive platform designed to automate your routine, track university intelligence, and
+                    eliminate schedule conflicts.
+                </p>
+            </div>
+        </div>
+
+        <!-- Feature List -->
+        <div class="relative z-10 space-y-5">
+            <div class="flex items-center gap-4 bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/10 animate-float"
+                style="animation-delay: 0s;">
+                <div class="h-10 w-10 rounded-full bg-green-500/20 flex items-center justify-center shrink-0">
+                    <i class="ph-fill ph-calendar-check text-green-300 text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-white">Smart Routine Manager</h3>
+                    <p class="text-xs text-green-100/70 mt-0.5">Automated clash detection and class tracking.</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/10 animate-float"
+                style="animation-delay: 1s;">
+                <div class="h-10 w-10 rounded-full bg-green-500/20 flex items-center justify-center shrink-0">
+                    <i class="ph-fill ph-brain text-green-300 text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-white">AUST Intelligence (AI)</h3>
+                    <p class="text-xs text-green-100/70 mt-0.5">Notices parsed and mapped directly to your schedule.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="relative z-10 text-xs text-green-200/60 font-medium">
+            © 2024 FacultyOS. For Ahsanullah University of Science and Technology.
+        </div>
+    </div>
+
+    <!-- Right Pane: Registration Form -->
+    <div class="w-full lg:w-7/12 flex items-center justify-center p-6 sm:p-12 lg:p-24 bg-gray-50 relative">
+
+        <!-- Mobile Logo (Shows only on small screens) -->
+        <div
+            class="absolute top-8 left-8 flex lg:hidden items-center gap-2 font-bold text-xl text-green-800 tracking-tight">
+            <i class="ph-fill ph-graduation-cap text-2xl"></i>
+            FacultyOS
+        </div>
+
+        <div
+            class="w-full max-w-md bg-white p-8 sm:p-10 rounded-2xl shadow-xl shadow-gray-200/50 border border-gray-100">
+
+            <div class="mb-8 text-center sm:text-left">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight mb-2">Create Account</h2>
+                <p class="text-sm text-gray-500">Enter your details to register as an AUST faculty member.</p>
+            </div>
+
+            <form action="index.html" class="space-y-5">
+
+                <!-- Full Name Input -->
+                <div class="input-field space-y-1.5">
+                    <label for="fullName" class="block text-sm font-medium text-gray-700">Full Name <span
+                            class="text-red-500">*</span></label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                            <i class="ph ph-user text-gray-400 text-lg"></i>
+                        </div>
+                        <input type="text" id="fullName" name="fullName" required
+                            class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-lg text-sm bg-gray-50 focus:bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-600/20 focus:border-green-600 transition-colors"
+                            placeholder="Dr. Shafiqur Rahman">
+                    </div>
+                </div>
+
+                <!-- AUST Email Input -->
+                <div class="input-field space-y-1.5">
+                    <label for="email" class="block text-sm font-medium text-gray-700">AUST Edu Email <span
+                            class="text-red-500">*</span></label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                            <i class="ph ph-envelope-simple text-gray-400 text-lg"></i>
+                        </div>
+                        <input type="email" id="email" name="email" required pattern="^[a-zA-Z0-9._%+-]+@aust\.edu$"
+                            class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-lg text-sm bg-gray-50 focus:bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-600/20 focus:border-green-600 transition-colors"
+                            placeholder="firstname.dept@aust.edu">
+                    </div>
+                    <p class="text-xs text-gray-500 flex items-center gap-1 mt-1">
+                        <i class="ph-fill ph-info text-blue-500"></i> Must be a valid @aust.edu address
+                    </p>
+                </div>
+
+                <!-- Department Dropdown -->
+                <div class="input-field space-y-1.5">
+                    <label for="department" class="block text-sm font-medium text-gray-700">Department <span
+                            class="text-red-500">*</span></label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                            <i class="ph ph-buildings text-gray-400 text-lg"></i>
+                        </div>
+                        <select id="department" name="department" required
+                            class="block w-full pl-10 pr-10 py-2.5 border border-gray-200 rounded-lg text-sm bg-gray-50 focus:bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-600/20 focus:border-green-600 transition-colors appearance-none cursor-pointer">
+                            <option value="" disabled selected>Select your department</option>
+                            <option value="cse">Computer Science and Engineering (CSE)</option>
+                            <option value="eee">Electrical and Electronic Engineering (EEE)</option>
+                            <option value="ce">Civil Engineering (CE)</option>
+                            <option value="me">Mechanical Engineering (ME)</option>
+                            <option value="te">Textile Engineering (TE)</option>
+                            <option value="ipe">Industrial and Production Engineering (IPE)</option>
+                            <option value="arch">Architecture (Arch)</option>
+                            <option value="bba">School of Business (BBA)</option>
+                            <option value="as">Arts and Sciences (A&S)</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none">
+                            <i class="ph ph-caret-down text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Password Input (Added for completeness of a registration form) -->
+                <div class="input-field space-y-1.5">
+                    <label for="password" class="block text-sm font-medium text-gray-700">Password <span
+                            class="text-red-500">*</span></label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                            <i class="ph ph-lock-key text-gray-400 text-lg"></i>
+                        </div>
+                        <input type="password" id="password" name="password" required
+                            class="block w-full pl-10 pr-10 py-2.5 border border-gray-200 rounded-lg text-sm bg-gray-50 focus:bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-600/20 focus:border-green-600 transition-colors"
+                            placeholder="••••••••">
+                        <button type="button"
+                            class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none">
+                            <i class="ph ph-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Terms & Conditions -->
+                <div class="flex items-start gap-2 pt-2">
+                    <div class="flex items-center h-5">
+                        <input id="terms" name="terms" type="checkbox" required
+                            class="h-4 w-4 text-green-600 border-gray-300 rounded focus:ring-green-600 cursor-pointer">
+                    </div>
+                    <div class="text-xs text-gray-500">
+                        <label for="terms" class="cursor-pointer">I agree to the FacultyOS <a href="#"
+                                class="text-green-700 hover:underline font-medium">Terms of Service</a> and <a href="#"
+                                class="text-green-700 hover:underline font-medium">Privacy Policy</a>.</label>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="pt-2">
+                    <button type="submit"
+                        class="w-full flex items-center justify-center gap-2 bg-green-700 hover:bg-green-800 text-white font-medium py-2.5 px-4 rounded-lg transition-all shadow-md shadow-green-700/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-700 active:scale-[0.98]">
+                        Complete Registration
+                        <i class="ph-bold ph-arrow-right"></i>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Sign In Link -->
+            <div class="mt-8 text-center text-sm text-gray-500">
+                Already have an account?
+                <a href="#"
+                    class="font-semibold text-green-700 hover:text-green-800 hover:underline transition-colors">Sign in
+                    here</a>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

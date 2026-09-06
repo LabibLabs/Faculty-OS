@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FacultyOS - My Routine</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+        .floating-ai-btn {
+            box-shadow: 0 4px 14px 0 rgba(21, 128, 61, 0.39);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .floating-ai-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(21, 128, 61, 0.23);
+        }
+
+        .ai-chat-panel {
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(100%);
+        }
+
+        .ai-chat-panel.open {
+            transform: translateX(0);
+        }
+
+        /* Calendar Grid specific styles */
+        .time-grid-bg {
+            background-image: linear-gradient(to right, #f3f4f6 1px, transparent 1px);
+            background-size: 11.11% 100%;
+            /* 9 hours = 11.11% per hour */
+        }
+
+        .event-card {
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .event-card:hover {
+            filter: brightness(0.95);
+            transform: scale(1.01);
+            z-index: 10;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Current time indicator line */
+        .current-time-line {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #ef4444;
+            /* Red-500 */
+            z-index: 20;
+            pointer-events: none;
+        }
+
+        .current-time-dot {
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #ef4444;
+        }
+    </style>
+</head>
+
+<body class="flex h-screen overflow-hidden text-gray-800">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white border-r border-gray-200 flex flex-col hidden md:flex z-10">
+        <!-- Logo Area -->
+        <div class="h-16 flex items-center px-6 border-b border-gray-100">
+            <div class="flex items-center gap-2 text-green-700 font-bold text-xl tracking-tight">
+                <i class="ph-fill ph-graduation-cap text-2xl"></i>
+                FacultyOS
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="flex-1 overflow-y-auto py-4 px-3 flex flex-col gap-6">
+
+            <!-- Menu Section -->
+            <div>
+                <div class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Menu</div>
+                <nav class="space-y-1">
+                    <a href="index.html"
+                        class="flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-50 hover:text-green-700 rounded-lg font-medium transition-colors">
+                        <i class="ph ph-squares-four text-lg"></i>
+                        Dashboard
+                    </a>
+                    <!-- Active State on Routine -->
+                    <a href="#"
+                        class="flex items-center gap-3 px-3 py-2.5 bg-green-700 text-white rounded-lg font-medium transition-colors">
+                        <i class="ph ph-calendar-blank text-lg"></i>
+                        My Routine
+                    </a>
+                    <a href="#"
+                        class="flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-50 hover:text-green-700 rounded-lg font-medium transition-colors">
+                        <i class="ph ph-megaphone text-lg"></i>
+                        AUST Intel
+                    </a>
+                    <a href="#"
+                        class="flex items-center justify-between px-3 py-2.5 text-gray-600 hover:bg-gray-50 hover:text-green-700 rounded-lg font-medium transition-colors">
+                        <div class="flex items-center gap-3">
+                            <i class="ph ph-warning-circle text-lg"></i>
+                            Conflicts & Alerts
+                        </div>
+                        <span class="bg-red-100 text-red-600 text-xs font-bold px-2 py-0.5 rounded-full">1</span>
+                    </a>
+                </nav>
+            </div>
+
+            <!-- General Section -->
+            <div>
+                <div class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">General</div>
+                <nav class="space-y-1">
+                    <a href="#"
+                        class="flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-50 hover:text-green-700 rounded-lg font-medium transition-colors">
+                        <i class="ph ph-gear text-lg"></i>
+                        Settings
+                    </a>
+                    <a href="#"
+                        class="flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-50 hover:text-green-700 rounded-lg font-medium transition-colors">
+                        <i class="ph ph-question text-lg"></i>
+                        Help
+                    </a>
+                    <a href="#"
+                        class="flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-red-50 hover:text-red-600 rounded-lg font-medium transition-colors mt-4">
+                        <i class="ph ph-sign-out text-lg"></i>
+                        Logout
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden relative">
+
+        <!-- Top Header -->
+        <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shrink-0">
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-gray-500 hover:text-gray-700">
+                <i class="ph ph-list text-2xl"></i>
+            </button>
+
+            <!-- Search Bar -->
+            <div class="flex-1 max-w-xl hidden md:flex items-center">
+                <div class="relative w-full">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="ph ph-magnifying-glass text-gray-400"></i>
+                    </div>
+                    <input type="text"
+                        class="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-lg leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-1 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors"
+                        placeholder="Ask FacultyOS or search resources (Ctrl+K)">
+                    <div class="absolute inset-y-0 right-0 pr-2 flex items-center">
+                        <kbd
+                            class="hidden sm:inline-block border border-gray-200 rounded px-1.5 text-xs font-sans font-medium text-gray-400 bg-white">⌘K</kbd>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Actions -->
+            <div class="flex items-center gap-4 ml-auto">
+                <button class="text-gray-400 hover:text-gray-600 relative">
+                    <i class="ph ph-envelope-simple text-xl"></i>
+                </button>
+                <button class="text-gray-400 hover:text-gray-600 relative">
+                    <i class="ph ph-bell text-xl"></i>
+                    <span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-white"></span>
+                </button>
+                <div class="h-8 w-px bg-gray-200 mx-2"></div>
+                <div class="flex items-center gap-3 cursor-pointer">
+                    <img class="h-9 w-9 rounded-full object-cover border border-gray-200"
+                        src="https://ui-avatars.com/api/?name=Dr.+Rahman&background=0D8ABC&color=fff" alt="User avatar">
+                    <div class="hidden sm:block text-sm">
+                        <p class="font-semibold text-gray-700 leading-tight">Dr. Rahman</p>
+                        <p class="text-xs text-gray-500">Dept. of CSE</p>
+                    </div>
+                    <i class="ph ph-caret-down text-gray-400 text-sm hidden sm:block"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Routine Content Area -->
+        <div class="flex-1 overflow-y-auto bg-[#f8fafc] flex flex-col">
+
+            <!-- Page Header & Controls -->
+            <div class="p-6 pb-4 max-w-7xl mx-auto w-full shrink-0">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+                    <div>
+                        <nav class="text-sm font-medium text-gray-500 mb-1">
+                            <ol class="list-none p-0 inline-flex">
+                                <li class="flex items-center">
+                                    <span class="text-gray-700">My Routine</span>
+                            </ol>
+                        </nav>
+                        <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">Weekly Schedule</h1>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <!-- Date Navigation -->
+                        <div class="flex items-center bg-white border border-gray-200 rounded-lg shadow-sm">
+                            <button
+                                class="px-3 py-2 text-gray-500 hover:text-gray-700 hover:bg-gray-50 border-r border-gray-200 transition-colors rounded-l-lg">
+                                <i class="ph ph-caret-left"></i>
+                            </button>
+                            <div class="px-4 py-2 text-sm font-semibold text-gray-700 flex items-center gap-2">
+                                <i class="ph ph-calendar-blank text-gray-400"></i>
+                                Sep 15 – Sep 19, 2024
+                            </div>
+                            <button
+                                class="px-3 py-2 text-gray-500 hover:text-gray-700 hover:bg-gray-50 border-l border-gray-200 transition-colors rounded-r-lg">
+                                <i class="ph ph-caret-right"></i>
+                            </button>
+                        </div>
+
+                        <button
+                            class="px-4 py-2 bg-white border border-gray-200 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 shadow-sm transition-colors hidden md:block">
+                            Today
+                        </button>
+
+                        <button
+                            class="px-4 py-2 bg-green-700 text-white text-sm font-medium rounded-lg hover:bg-green-800 shadow-sm transition-colors flex items-center gap-2">
+                            <i class="ph ph-plus"></i>
+                            <span class="hidden sm:inline">Add Personal Event</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Legend / Filters -->
+                <div class="flex flex-wrap items-center gap-4 text-xs font-medium text-gray-600">
+                    <span class="flex items-center gap-1.5"><span
+                            class="w-3 h-3 rounded-full bg-green-400 border border-green-500"></span> Classes</span>
+                    <span class="flex items-center gap-1.5"><span
+                            class="w-3 h-3 rounded-full bg-blue-400 border border-blue-500"></span> Labs</span>
+                    <span class="flex items-center gap-1.5"><span
+                            class="w-3 h-3 rounded-full bg-purple-400 border border-purple-500"></span> Meetings</span>
+                    <span class="flex items-center gap-1.5"><span
+                            class="w-3 h-3 rounded-full bg-orange-300 border border-orange-400"></span> Office
+                        Hours</span>
+                    <span class="flex items-center gap-1.5"><span
+                            class="w-3 h-3 rounded border-2 border-dashed border-gray-300 bg-gray-50"></span> Free
+                        Slot</span>
+                </div>
+            </div>
+
+            <!-- Calendar Grid Container -->
+            <div class="px-6 pb-8 max-w-7xl mx-auto w-full flex-1">
+                <div
+                    class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col h-full min-h-[600px]">
+
+                    <!-- X-Axis: Time Headers (8AM to 5PM = 9 hours) -->
+                    <div class="flex border-b border-gray-200 bg-gray-50 shrink-0">
+                        <!-- Y-Axis Spacer -->
+                        <div class="w-24 shrink-0 border-r border-gray-200"></div>
+
+                        <!-- Times -->
+                        <div class="flex-1 flex text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                            <div class="flex-1 py-3 px-2 border-r border-gray-100 text-center">8 AM</div>
+                            <div class="flex-1 py-3 px-2 border-r border-gray-100 text-center">9 AM</div>
+                            <div class="flex-1 py-3 px-2 border-r border-gray-100 text-center">10 AM</div>
+                            <div class="flex-1 py-3 px-2 border-r border-gray-100 text-center">11 AM</div>
+                            <div class="flex-1 py-3 px-2 border-r border-gray-100 text-center">12 PM</div>
+                            <div class="flex-1 py-3 px-2 border-r border-gray-100 text-center">1 PM</div>
+                            <div class="flex-1 py-3 px-2 border-r border-gray-100 text-center">2 PM</div>
+                            <div class="flex-1 py-3 px-2 border-r border-gray-100 text-center">3 PM</div>
+                            <div class="flex-1 py-3 px-2 text-center">4 PM</div>
+                        </div>
+                    </div>
+
+                    <!-- Grid Body -->
+                    <div class="flex-1 relative overflow-y-auto">
+
+                        <!-- Row 1: Sunday -->
+                        <div class="flex border-b border-gray-100 h-28 group hover:bg-gray-50/50 transition-colors">
+                            <!-- Day Label -->
+                            <div
+                                class="w-24 shrink-0 border-r border-gray-200 flex flex-col justify-center items-center bg-white z-10 group-hover:bg-gray-50/50 transition-colors">
+                                <span class="text-sm font-bold text-gray-800">Sun</span>
+                                <span class="text-xs text-gray-400">Sep 15</span>
+                            </div>
+
+                            <!-- Timeline Area -->
+                            <div class="flex-1 relative time-grid-bg">
+
+                                <!-- Event: Class 1 (8:00 - 9:30 => Left 0%, Width 16.66%) -->
+                                <div class="event-card absolute top-2 bottom-2 bg-green-50 border border-green-200 rounded-lg p-2.5 overflow-hidden flex flex-col shadow-sm"
+                                    style="left: 0%; width: 16.66%;">
+                                    <div class="w-1 absolute left-0 top-0 bottom-0 bg-green-500"></div>
+                                    <h3 class="text-xs font-bold text-green-900 truncate">CSE 2201</h3>
+                                    <p class="text-[10px] text-green-700 mt-0.5 truncate flex items-center gap-1"><i
+                                            class="ph-fill ph-chalkboard"></i> Data Structures</p>
+                                    <p class="text-[10px] text-green-600 mt-auto truncate flex items-center gap-1"><i
+                                            class="ph ph-map-pin"></i> Room 5B</p>
+                                </div>
+
+                                <!-- Event: Class 2 (11:00 - 12:30 => Left 33.33%, Width 16.66%) -->
+                                <div class="event-card absolute top-2 bottom-2 bg-green-50 border border-green-200 rounded-lg p-2.5 overflow-hidden flex flex-col shadow-sm"
+                                    style="left: 33.33%; width: 16.66%;">
+                                    <div class="w-1 absolute left-0 top-0 bottom-0 bg-green-500"></div>
+                                    <h3 class="text-xs font-bold text-green-900 truncate">CSE 2203</h3>
+                                    <p class="text-[10px] text-green-700 mt-0.5 truncate flex items-center gap-1"><i
+                                            class="ph-fill ph-chalkboard"></i> Algorithms</p>
+                                    <p class="text-[10px] text-green-600 mt-auto truncate flex items-center gap-1"><i
+                                            class="ph ph-map-pin"></i> Room 4A</p>
+                                </div>
+
+                                <!-- Event: Research (2:00 PM - 4:30 PM => Left 66.66%, Width 27.77%) -->
+                                <div class="event-card absolute top-2 bottom-2 bg-orange-50 border border-orange-200 rounded-lg p-2.5 overflow-hidden flex flex-col shadow-sm"
+                                    style="left: 66.66%; width: 27.77%;">
+                                    <div class="w-1 absolute left-0 top-0 bottom-0 bg-orange-400"></div>
+                                    <h3 class="text-xs font-bold text-orange-900 truncate">Research Block</h3>
+                                    <p class="text-[10px] text-orange-700 mt-0.5 truncate flex items-center gap-1"><i
+                                            class="ph-fill ph-flask"></i> ML Paper Draft</p>
+                                    <p class="text-[10px] text-orange-600 mt-auto truncate flex items-center gap-1"><i
+                                            class="ph ph-clock"></i> 2:00 PM - 4:30 PM</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Row 2: Monday (Current Day Example) -->
+                        <div
+                            class="flex border-b border-gray-100 h-28 group hover:bg-gray-50/50 transition-colors bg-blue-50/10">
+                            <!-- Day Label -->
+                            <div
+                                class="w-24 shrink-0 border-r border-gray-200 flex flex-col justify-center items-center bg-white z-10 group-hover:bg-gray-50/50 transition-colors">
+                                <span class="text-sm font-bold text-green-700">Mon</span>
+                                <span
+                                    class="text-xs font-semibold text-green-700 bg-green-100 px-1.5 py-0.5 rounded mt-1">Today</span>
+                            </div>
+
+                            <!-- Timeline Area -->
+                            <div class="flex-1 relative time-grid-bg">
+
+                                <!-- Current Time Line Indicator (e.g. 10:15 AM = Left ~25%) -->
+                                <div class="current-time-line" style="left: 25%;">
+                                    <div class="current-time-dot"></div>
+                                </div>
+
+                                <!-- Free Slot Hint (9:30 - 11:00 => Left 16.66%, Width 16.66%) -->
+                                <div class="event-card absolute top-4 bottom-4 border-2 border-dashed border-gray-200 rounded-lg flex items-center justify-center bg-white/50"
+                                    style="left: 16.66%; width: 16.66%;">
+                                    <span class="text-[10px] font-medium text-gray-400">Free Slot</span>
+                                </div>
+
+                                <!-- Event: Meeting (11:00 - 12:30 => Left 33.33%, Width 16.66%) -->
+                                <div class="event-card absolute top-2 bottom-2 bg-purple-50 border border-purple-200 rounded-lg p-2.5 overflow-hidden flex flex-col shadow-sm"
+                                    style="left: 33.33%; width: 16.66%;">
+                                    <div class="w-1 absolute left-0 top-0 bottom-0 bg-purple-500"></div>
+                                    <h3 class="text-xs font-bold text-purple-900 truncate flex items-center gap-1">
+                                        <i class="ph-fill ph-users"></i> Faculty Mtg
+                                    </h3>
+                                    <p class="text-[10px] text-purple-700 mt-0.5 truncate line-clamp-2 leading-tight">
+                                        Monthly syllabus review</p>
+                                    <p
+                                        class="text-[10px] text-red-600 font-bold mt-auto truncate flex items-center gap-1 bg-red-50 p-1 rounded border border-red-100">
+                                        <i class="ph-fill ph-warning-circle"></i> Conflict Alert!
+                                    </p>
+                                </div>
+
+                                <!-- Event: Lab (1:00 PM - 4:00 PM => Left 55.55%, Width 33.33%) -->
+                                <div class="event-card absolute top-2 bottom-2 bg-blue-50 border border-blue-200 rounded-lg p-2.5 overflow-hidden flex flex-col shadow-sm"
+                                    style="left: 55.55%; width: 33.33%;">
+                                    <div class="w-1 absolute left-0 top-0 bottom-0 bg-blue-500"></div>
+                                    <h3 class="text-xs font-bold text-blue-900 truncate">CSE 2202 Lab</h3>
+                                    <p class="text-[10px] text-blue-700 mt-0.5 truncate flex items-center gap-1"><i
+                                            class="ph-fill ph-desktop"></i> Data Structures Lab (Section A)</p>
+                                    <p class="text-[10px] text-blue-600 mt-auto truncate flex items-center gap-1"><i
+                                            class="ph ph-map-pin"></i> Software Lab 2</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Row 3: Tuesday -->
+                        <div class="flex border-b border-gray-100 h-28 group hover:bg-gray-50/50 transition-colors">
+                            <div
+                                class="w-24 shrink-0 border-r border-gray-200 flex flex-col justify-center items-center bg-white z-10 group-hover:bg-gray-50/50 transition-colors">
+                                <span class="text-sm font-bold text-gray-800">Tue</span>
+                                <span class="text-xs text-gray-400">Sep 17</span>
+                            </div>
+                            <div class="flex-1 relative time-grid-bg">
+
+                                <!-- Event: Long Lab (8:00 - 11:00 => Left 0%, Width 33.33%) -->
+                                <div class="event-card absolute top-2 bottom-2 bg-blue-50 border border-blue-200 rounded-lg p-2.5 overflow-hidden flex flex-col shadow-sm"
+                                    style="left: 0%; width: 33.33%;">
+                                    <div class="w-1 absolute left-0 top-0 bottom-0 bg-blue-500"></div>
+                                    <h3 class="text-xs font-bold text-blue-900 truncate">CSE 2204 Lab</h3>
+                                    <p class="text-[10px] text-blue-700 mt-0.5 truncate flex items-center gap-1"><i
+                                            class="ph-fill ph-desktop"></i> Algorithms Lab (Section B)</p>
+                                    <p class="text-[10px] text-blue-600 mt-auto truncate flex items-center gap-1"><i
+                                            class="ph ph-map-pin"></i> Hardware Lab</p>
+                                </div>
+
+                                <!-- Event: Office Hours (2:00 PM - 3:30 PM => Left 66.66%, Width 16.66%) -->
+                                <div class="event-card absolute top-2 bottom-2 bg-orange-50 border border-orange-200 rounded-lg p-2.5 overflow-hidden flex flex-col shadow-sm"
+                                    style="left: 66.66%; width: 16.66%;">
+                                    <div class="w-1 absolute left-0 top-0 bottom-0 bg-orange-400"></div>
+                                    <h3 class="text-xs font-bold text-orange-900 truncate">Office Hours</h3>
+                                    <p class="text-[10px] text-orange-700 mt-0.5 truncate flex items-center gap-1"><i
+                                            class="ph-fill ph-student"></i> Student Consult</p>
+                                    <p class="text-[10px] text-orange-600 mt-auto truncate flex items-center gap-1"><i
+                                            class="ph ph-map-pin"></i> Room 301</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Row 4: Wednesday -->
+                        <div class="flex border-b border-gray-100 h-28 group hover:bg-gray-50/50 transition-colors">
+                            <div
+                                class="w-24 shrink-0 border-r border-gray-200 flex flex-col justify-center items-center bg-white z-10 group-hover:bg-gray-50/50 transition-colors">
+                                <span class="text-sm font-bold text-gray-800">Wed</span>
+                                <span class="text-xs text-gray-400">Sep 18</span>
+                            </div>
+                            <div class="flex-1 relative time-grid-bg">
+
+                                <!-- Event: Class (11:00 - 12:30 => Left 33.33%, Width 16.66%) -->
+                                <div class="event-card absolute top-2 bottom-2 bg-green-50 border border-green-200 rounded-lg p-2.5 overflow-hidden flex flex-col shadow-sm"
+                                    style="left: 33.33%; width: 16.66%;">
+                                    <div class="w-1 absolute left-0 top-0 bottom-0 bg-green-500"></div>
+                                    <h3 class="text-xs font-bold text-green-900 truncate">CSE 2201</h3>
+                                    <p class="text-[10px] text-green-700 mt-0.5 truncate flex items-center gap-1"><i
+                                            class="ph-fill ph-chalkboard"></i> Data Structures</p>
+                                    <p class="text-[10px] text-green-600 mt-auto truncate flex items-center gap-1"><i
+                                            class="ph ph-map-pin"></i> Room 5B</p>
+                                </div>
+
+                                <!-- Event: Class (2:00 PM - 3:30 PM => Left 66.66%, Width 16.66%) -->
+                                <div class="event-card absolute top-2 bottom-2 bg-green-50 border border-green-200 rounded-lg p-2.5 overflow-hidden flex flex-col shadow-sm"
+                                    style="left: 66.66%; width: 16.66%;">
+                                    <div class="w-1 absolute left-0 top-0 bottom-0 bg-green-500"></div>
+                                    <h3 class="text-xs font-bold text-green-900 truncate">CSE 2203</h3>
+                                    <p class="text-[10px] text-green-700 mt-0.5 truncate flex items-center gap-1"><i
+                                            class="ph-fill ph-chalkboard"></i> Algorithms</p>
+                                    <p class="text-[10px] text-green-600 mt-auto truncate flex items-center gap-1"><i
+                                            class="ph ph-map-pin"></i> Room 4A</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Row 5: Thursday -->
+                        <div class="flex h-28 group hover:bg-gray-50/50 transition-colors">
+                            <div
+                                class="w-24 shrink-0 border-r border-gray-200 flex flex-col justify-center items-center bg-white z-10 group-hover:bg-gray-50/50 transition-colors">
+                                <span class="text-sm font-bold text-gray-800">Thu</span>
+                                <span class="text-xs text-gray-400">Sep 19</span>
+                            </div>
+                            <div class="flex-1 relative time-grid-bg">
+
+                                <!-- Event: Office Hours (9:30 - 11:00 => Left 16.66%, Width 16.66%) -->
+                                <div class="event-card absolute top-2 bottom-2 bg-orange-50 border border-orange-200 rounded-lg p-2.5 overflow-hidden flex flex-col shadow-sm"
+                                    style="left: 16.66%; width: 16.66%;">
+                                    <div class="w-1 absolute left-0 top-0 bottom-0 bg-orange-400"></div>
+                                    <h3 class="text-xs font-bold text-orange-900 truncate">Office Hours</h3>
+                                    <p class="text-[10px] text-orange-700 mt-0.5 truncate flex items-center gap-1"><i
+                                            class="ph-fill ph-student"></i> Open Door</p>
+                                </div>
+
+                                <!-- Event: Meeting (12:30 PM - 2:00 PM => Left 50%, Width 16.66%) -->
+                                <div class="event-card absolute top-2 bottom-2 bg-purple-50 border border-purple-200 rounded-lg p-2.5 overflow-hidden flex flex-col shadow-sm"
+                                    style="left: 50%; width: 16.66%;">
+                                    <div class="w-1 absolute left-0 top-0 bottom-0 bg-purple-500"></div>
+                                    <h3 class="text-xs font-bold text-purple-900 truncate">Dept Meeting</h3>
+                                    <p class="text-[10px] text-purple-700 mt-0.5 truncate flex items-center gap-1"><i
+                                            class="ph-fill ph-users"></i> Curriculum</p>
+                                    <p class="text-[10px] text-purple-600 mt-auto truncate flex items-center gap-1"><i
+                                            class="ph ph-map-pin"></i> Conf Room 1</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating AI Assistant Button -->
+        <button id="aiToggleBtn"
+            class="floating-ai-btn absolute bottom-6 right-6 h-14 w-40 bg-gradient-to-r from-green-700 to-green-800 rounded-full flex items-center justify-center gap-2 text-white shadow-lg cursor-pointer z-50 group hover:pr-4">
+            <i class="ph-fill ph-robot text-2xl group-hover:rotate-12 transition-transform"></i>
+            <span class="font-semibold text-sm">FacultyOS</span>
+            <!-- Notification Dot -->
+            <span class="absolute top-0 right-0 flex h-3 w-3 -mt-1 -mr-1">
+                <span
+                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-3 w-3 bg-yellow-500 border-2 border-green-800"></span>
+            </span>
+        </button>
+
+    </main>
+
+    <!-- AI Assistant Slide-out Panel -->
+    <div id="aiChatPanel"
+        class="ai-chat-panel fixed inset-y-0 right-0 w-full md:w-[400px] bg-white shadow-2xl border-l border-gray-200 z-50 flex flex-col pt-16 md:pt-0">
+
+        <!-- Panel Header -->
+        <div class="h-16 border-b border-gray-100 flex items-center justify-between px-5 bg-gray-50/50 shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center text-green-700">
+                    <i class="ph-fill ph-robot text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="font-bold text-gray-800 leading-none">FacultyOS</h2>
+                    <p
+                        class="text-[10px] text-green-600 font-medium flex items-center gap-1 uppercase tracking-wider mt-1">
+                        <span class="h-1.5 w-1.5 rounded-full bg-green-500 inline-block"></span> Online
+                    </p>
+                </div>
+            </div>
+            <button id="closeAiBtn"
+                class="text-gray-400 hover:text-gray-600 p-1.5 rounded-md hover:bg-gray-100 transition-colors">
+                <i class="ph ph-x text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Chat Area -->
+        <div class="flex-1 overflow-y-auto p-4 space-y-4 bg-white">
+
+            <!-- Contextual AI Welcome Message -->
+            <div class="flex gap-3">
+                <div
+                    class="h-6 w-6 rounded-full bg-green-100 flex items-center justify-center text-green-700 shrink-0 mt-1">
+                    <i class="ph-fill ph-robot text-xs"></i>
+                </div>
+                <div
+                    class="bg-gray-50 rounded-2xl rounded-tl-none px-4 py-3 text-sm text-gray-700 border border-gray-100 max-w-[85%]">
+                    <p>I see you are viewing your routine, Dr. Rahman.</p>
+                    <p class="mt-2 text-xs text-gray-500">I noticed a <strong class="text-red-600 font-medium">schedule
+                            conflict</strong> on Monday at 11:30 AM between your Faculty Meeting and the newly
+                        rescheduled CSE 2201 Midterm.</p>
+                </div>
+            </div>
+
+            <!-- Suggested Prompts -->
+            <div class="pl-9 pr-4 flex flex-wrap gap-2">
+                <button
+                    class="text-xs px-3 py-1.5 bg-white border border-red-200 rounded-full text-red-700 hover:bg-red-50 transition-colors shadow-sm font-medium">Resolve
+                    conflict</button>
+                <button
+                    class="text-xs px-3 py-1.5 bg-white border border-gray-200 rounded-full text-gray-600 hover:border-green-300 hover:text-green-700 transition-colors shadow-sm">Cancel
+                    my Tuesday office hours</button>
+                <button
+                    class="text-xs px-3 py-1.5 bg-white border border-gray-200 rounded-full text-gray-600 hover:border-green-300 hover:text-green-700 transition-colors shadow-sm">Where
+                    is my next class?</button>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="p-4 border-t border-gray-100 bg-white shrink-0 pb-6">
+            <div class="relative flex items-end gap-2">
+                <div class="relative flex-1">
+                    <textarea rows="1"
+                        class="w-full bg-gray-50 border border-gray-200 rounded-xl pl-4 pr-10 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 resize-none max-h-32"
+                        placeholder="Ask anything about your schedule..." style="min-height: 44px;"></textarea>
+                    <button class="absolute right-2 bottom-2 text-gray-400 hover:text-gray-600 p-1">
+                        <i class="ph ph-microphone text-lg"></i>
+                    </button>
+                </div>
+                <button
+                    class="h-[44px] w-[44px] rounded-xl bg-green-700 text-white flex items-center justify-center hover:bg-green-800 transition-colors shrink-0 shadow-sm">
+                    <i class="ph-fill ph-paper-plane-right text-lg"></i>
+                </button>
+            </div>
+            <p class="text-center text-[10px] text-gray-400 mt-2">FacultyOS uses your university data to provide
+                answers.</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const aiToggleBtn = document.getElementById('aiToggleBtn');
+            const closeAiBtn = document.getElementById('closeAiBtn');
+            const aiChatPanel = document.getElementById('aiChatPanel');
+
+            // Toggle AI Panel
+            function toggleAiPanel() {
+                aiChatPanel.classList.toggle('open');
+                // Hide notification dot on first open
+                const dot = aiToggleBtn.querySelector('.absolute.top-0');
+                if (dot) dot.style.display = 'none';
+            }
+
+            aiToggleBtn.addEventListener('click', toggleAiPanel);
+            closeAiBtn.addEventListener('click', toggleAiPanel);
+
+            // Auto-resize textarea
+            const textarea = document.querySelector('textarea');
+            textarea.addEventListener('input', function () {
+                this.style.height = '44px'; // Reset
+                this.style.height = (this.scrollHeight) + 'px';
+            });
+
+            // Optional: Click events on event cards for demo purposes
+            const eventCards = document.querySelectorAll('.event-card');
+            eventCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    // Just a visual flash to show it's clickable in the demo
+                    card.style.opacity = '0.5';
+                    setTimeout(() => { card.style.opacity = '1'; }, 150);
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

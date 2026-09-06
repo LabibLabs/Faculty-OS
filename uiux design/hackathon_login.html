@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FacultyOS - Faculty Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+        }
+
+        /* Custom Input Styling */
+        .input-field {
+            transition: all 0.2s ease;
+        }
+
+        .input-field:focus-within {
+            transform: translateY(-1px);
+        }
+
+        /* Abstract Background Pattern for Left Pane */
+        .bg-pattern {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex antialiased text-gray-800">
+
+    <!-- Left Pane: Branding & Value Prop (Hidden on mobile) -->
+    <div
+        class="hidden lg:flex lg:w-5/12 bg-green-800 relative overflow-hidden flex-col justify-between p-12 text-white shadow-2xl z-10">
+        <!-- Abstract Background -->
+        <div class="absolute inset-0 bg-gradient-to-br from-green-700 to-green-900 z-0"></div>
+        <div class="absolute inset-0 bg-pattern opacity-30 z-0"></div>
+
+        <!-- Decorative glowing orbs -->
+        <div class="absolute top-0 left-0 -ml-16 -mt-16 w-80 h-80 rounded-full bg-green-500 blur-3xl opacity-20"></div>
+        <div class="absolute bottom-0 right-0 -mr-16 -mb-16 w-64 h-64 rounded-full bg-blue-500 blur-3xl opacity-20">
+        </div>
+
+        <!-- Content relative on top of background -->
+        <div class="relative z-10">
+            <div class="flex items-center gap-2 font-bold text-2xl tracking-tight mb-16">
+                <div class="bg-white text-green-800 p-2 rounded-lg shadow-lg">
+                    <i class="ph-fill ph-graduation-cap text-2xl"></i>
+                </div>
+                FacultyOS
+            </div>
+
+            <div class="space-y-6 max-w-md mt-12">
+                <div
+                    class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-semibold tracking-wide backdrop-blur-sm">
+                    <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                    SYSTEM ONLINE
+                </div>
+                <h1 class="text-4xl font-bold leading-tight">
+                    Welcome back to your <br>
+                    <span class="text-green-300">academic workspace.</span>
+                </h1>
+                <p class="text-green-100/80 text-lg leading-relaxed">
+                    Log in to view your intelligent routine, resolve schedule conflicts, and check the latest AUST
+                    notices.
+                </p>
+            </div>
+        </div>
+
+        <!-- Dynamic Element -->
+        <div class="relative z-10">
+            <div class="flex items-start gap-4 bg-white/10 backdrop-blur-sm p-5 rounded-xl border border-white/10 animate-float shadow-lg"
+                style="animation-delay: 0.5s;">
+                <div class="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center shrink-0 mt-0.5">
+                    <i class="ph-fill ph-robot text-white text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-white text-sm">AI Assistant is ready</h3>
+                    <p class="text-xs text-green-100/80 mt-1 leading-relaxed">"I've mapped the latest exam schedule
+                        updates to your routine. Log in to review the conflicts."</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="relative z-10 text-xs text-green-200/60 font-medium">
+            © 2026 FacultyOS. Built for AUST Faculty.
+        </div>
+    </div>
+
+    <!-- Right Pane: Login Form -->
+    <div class="w-full lg:w-7/12 flex items-center justify-center p-6 sm:p-12 lg:p-24 bg-gray-50 relative">
+
+        <!-- Mobile Logo (Shows only on small screens) -->
+        <div
+            class="absolute top-8 left-8 flex lg:hidden items-center gap-2 font-bold text-xl text-green-800 tracking-tight">
+            <i class="ph-fill ph-graduation-cap text-2xl"></i>
+            FacultyOS
+        </div>
+
+        <div
+            class="w-full max-w-md bg-white p-8 sm:p-10 rounded-2xl shadow-xl shadow-gray-200/50 border border-gray-100">
+
+            <div class="mb-8 text-center sm:text-left">
+                <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight mb-2">Sign In</h2>
+                <p class="text-sm text-gray-500">Access your personalized academic intelligence platform.</p>
+            </div>
+
+            <form action="index.html" class="space-y-6">
+
+                <!-- AUST Email Input -->
+                <div class="input-field space-y-1.5">
+                    <label for="email" class="block text-sm font-medium text-gray-700">AUST Edu Email</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                            <i class="ph ph-envelope-simple text-gray-400 text-lg"></i>
+                        </div>
+                        <input type="email" id="email" name="email" required pattern="^[a-zA-Z0-9._%+-]+@aust\.edu$"
+                            class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-lg text-sm bg-gray-50 focus:bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-600/20 focus:border-green-600 transition-colors"
+                            placeholder="firstname.dept@aust.edu">
+                    </div>
+                </div>
+
+                <!-- Password Input -->
+                <div class="input-field space-y-1.5">
+                    <div class="flex items-center justify-between">
+                        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                        <a href="#"
+                            class="text-xs font-semibold text-green-700 hover:text-green-800 hover:underline transition-colors tabindex="
+                            -1">Forgot Password?</a>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                            <i class="ph ph-lock-key text-gray-400 text-lg"></i>
+                        </div>
+                        <input type="password" id="password" name="password" required
+                            class="block w-full pl-10 pr-10 py-2.5 border border-gray-200 rounded-lg text-sm bg-gray-50 focus:bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-600/20 focus:border-green-600 transition-colors"
+                            placeholder="••••••••">
+                        <!-- Show/Hide Password Button -->
+                        <button type="button"
+                            class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none"
+                            onclick="togglePassword()">
+                            <i class="ph ph-eye" id="toggleIcon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Remember Me -->
+                <div class="flex items-center">
+                    <input id="remember-me" name="remember-me" type="checkbox"
+                        class="h-4 w-4 text-green-600 border-gray-300 rounded focus:ring-green-600 cursor-pointer">
+                    <label for="remember-me" class="ml-2 block text-sm text-gray-600 cursor-pointer">
+                        Keep me signed in
+                    </label>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="pt-2">
+                    <button type="submit"
+                        class="w-full flex items-center justify-center gap-2 bg-green-700 hover:bg-green-800 text-white font-medium py-2.5 px-4 rounded-lg transition-all shadow-md shadow-green-700/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-700 active:scale-[0.98]">
+                        Sign In
+                        <i class="ph-bold ph-sign-in"></i>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Register Link -->
+            <div class="mt-8 text-center text-sm text-gray-500">
+                Don't have a faculty account yet?
+                <a href="register.html"
+                    class="font-semibold text-green-700 hover:text-green-800 hover:underline transition-colors">Register
+                    here</a>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Simple script to toggle password visibility
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('toggleIcon');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('ph-eye');
+                toggleIcon.classList.add('ph-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('ph-eye-slash');
+                toggleIcon.classList.add('ph-eye');
+            }
+        }
+    </script>
+</body>
+
+</html>

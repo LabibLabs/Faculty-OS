@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FacultyOS - AUST Intelligence</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+        /* Floating AI Button Styles */
+        .floating-ai-btn {
+            box-shadow: 0 4px 14px 0 rgba(21, 128, 61, 0.39);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .floating-ai-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(21, 128, 61, 0.23);
+        }
+
+        /* AI Chat Panel Animations */
+        .ai-chat-panel {
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(100%);
+        }
+
+        .ai-chat-panel.open {
+            transform: translateX(0);
+        }
+
+        /* Intel Card Hover Effect */
+        .intel-card {
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .intel-card:hover {
+            border-color: #d1d5db;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+
+        /* AI Sparkle Animation */
+        @keyframes subtle-pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        .ai-sparkle {
+            animation: subtle-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
+</head>
+
+<body class="flex h-screen overflow-hidden text-gray-800">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white border-r border-gray-200 flex flex-col hidden md:flex z-10 shrink-0">
+        <!-- Logo Area -->
+        <div class="h-16 flex items-center px-6 border-b border-gray-100">
+            <div class="flex items-center gap-2 text-green-700 font-bold text-xl tracking-tight">
+                <i class="ph-fill ph-graduation-cap text-2xl"></i>
+                FacultyOS
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="flex-1 overflow-y-auto py-4 px-3 flex flex-col gap-6">
+
+            <!-- Menu Section -->
+            <div>
+                <div class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Menu</div>
+                <nav class="space-y-1">
+                    <a href="index.html"
+                        class="flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-50 hover:text-green-700 rounded-lg font-medium transition-colors">
+                        <i class="ph ph-squares-four text-lg"></i>
+                        Dashboard
+                    </a>
+                    <a href="routine.html"
+                        class="flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-50 hover:text-green-700 rounded-lg font-medium transition-colors">
+                        <i class="ph ph-calendar-blank text-lg"></i>
+                        My Routine
+                    </a>
+                    <!-- Active State on AUST Intel -->
+                    <a href="#"
+                        class="flex items-center gap-3 px-3 py-2.5 bg-green-700 text-white rounded-lg font-medium transition-colors">
+                        <i class="ph ph-megaphone text-lg"></i>
+                        AUST Intel
+                    </a>
+                    <a href="#"
+                        class="flex items-center justify-between px-3 py-2.5 text-gray-600 hover:bg-gray-50 hover:text-green-700 rounded-lg font-medium transition-colors">
+                        <div class="flex items-center gap-3">
+                            <i class="ph ph-warning-circle text-lg"></i>
+                            Conflicts & Alerts
+                        </div>
+                        <span class="bg-red-100 text-red-600 text-xs font-bold px-2 py-0.5 rounded-full">1</span>
+                    </a>
+                </nav>
+            </div>
+
+            <!-- General Section -->
+            <div>
+                <div class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">General</div>
+                <nav class="space-y-1">
+                    <a href="#"
+                        class="flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-50 hover:text-green-700 rounded-lg font-medium transition-colors">
+                        <i class="ph ph-gear text-lg"></i>
+                        Settings
+                    </a>
+                    <a href="#"
+                        class="flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-gray-50 hover:text-green-700 rounded-lg font-medium transition-colors">
+                        <i class="ph ph-question text-lg"></i>
+                        Help
+                    </a>
+                    <a href="#"
+                        class="flex items-center gap-3 px-3 py-2.5 text-gray-600 hover:bg-red-50 hover:text-red-600 rounded-lg font-medium transition-colors mt-4">
+                        <i class="ph ph-sign-out text-lg"></i>
+                        Logout
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden relative">
+
+        <!-- Top Header -->
+        <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shrink-0">
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-gray-500 hover:text-gray-700">
+                <i class="ph ph-list text-2xl"></i>
+            </button>
+
+            <!-- Search Bar -->
+            <div class="flex-1 max-w-xl hidden md:flex items-center">
+                <div class="relative w-full">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="ph ph-magnifying-glass text-gray-400"></i>
+                    </div>
+                    <input type="text"
+                        class="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-lg leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-1 focus:ring-green-500 focus:border-green-500 sm:text-sm transition-colors"
+                        placeholder="Ask FacultyOS or search resources (Ctrl+K)">
+                    <div class="absolute inset-y-0 right-0 pr-2 flex items-center">
+                        <kbd
+                            class="hidden sm:inline-block border border-gray-200 rounded px-1.5 text-xs font-sans font-medium text-gray-400 bg-white">⌘K</kbd>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Actions -->
+            <div class="flex items-center gap-4 ml-auto">
+                <button class="text-gray-400 hover:text-gray-600 relative">
+                    <i class="ph ph-envelope-simple text-xl"></i>
+                </button>
+                <button class="text-gray-400 hover:text-gray-600 relative">
+                    <i class="ph ph-bell text-xl"></i>
+                    <span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-white"></span>
+                </button>
+                <div class="h-8 w-px bg-gray-200 mx-2"></div>
+                <div class="flex items-center gap-3 cursor-pointer">
+                    <img class="h-9 w-9 rounded-full object-cover border border-gray-200"
+                        src="https://ui-avatars.com/api/?name=Dr.+Rahman&background=0D8ABC&color=fff" alt="User avatar">
+                    <div class="hidden sm:block text-sm">
+                        <p class="font-semibold text-gray-700 leading-tight">Dr. Rahman</p>
+                        <p class="text-xs text-gray-500">Dept. of CSE</p>
+                    </div>
+                    <i class="ph ph-caret-down text-gray-400 text-sm hidden sm:block"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Intel Content Area -->
+        <div class="flex-1 overflow-y-auto bg-[#f8fafc] flex flex-col">
+
+            <div class="p-6 pb-4 max-w-7xl mx-auto w-full shrink-0">
+                <!-- Page Header -->
+                <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
+                    <div>
+                        <nav class="text-sm font-medium text-gray-500 mb-1">
+                            <ol class="list-none p-0 inline-flex">
+                                <li class="flex items-center">
+                                    <span class="text-gray-700">AUST Intel</span>
+                                </li>
+                            </ol>
+                        </nav>
+                        <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 flex items-center gap-2">
+                            AUST Intelligence
+                        </h1>
+                        <p class="text-gray-500 text-sm mt-1">University notices automatically analyzed and mapped to
+                            your schedule.</p>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <button
+                            class="px-4 py-2 bg-white border border-gray-200 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 shadow-sm transition-colors flex items-center gap-2">
+                            <i class="ph ph-funnel"></i>
+                            Filter
+                        </button>
+                        <button
+                            class="px-4 py-2 bg-white border border-gray-200 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 shadow-sm transition-colors flex items-center gap-2">
+                            <i class="ph ph-arrows-clockwise"></i>
+                            Refresh Sync
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Category Filters -->
+                <div class="flex overflow-x-auto pb-2 -mb-2 gap-2 hide-scrollbar">
+                    <button
+                        class="whitespace-nowrap px-4 py-1.5 bg-gray-800 text-white text-sm font-medium rounded-full shadow-sm">
+                        All Updates <span class="ml-1 opacity-70 text-xs">12</span>
+                    </button>
+                    <button
+                        class="whitespace-nowrap px-4 py-1.5 bg-white border border-red-200 text-red-700 hover:bg-red-50 text-sm font-medium rounded-full transition-colors flex items-center gap-1.5 shadow-sm">
+                        <span class="w-2 h-2 rounded-full bg-red-500"></span> Action Required <span
+                            class="ml-1 bg-red-100 px-1.5 rounded text-xs">1</span>
+                    </button>
+                    <button
+                        class="whitespace-nowrap px-4 py-1.5 bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 text-sm font-medium rounded-full transition-colors">
+                        Academics
+                    </button>
+                    <button
+                        class="whitespace-nowrap px-4 py-1.5 bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 text-sm font-medium rounded-full transition-colors">
+                        Examinations
+                    </button>
+                    <button
+                        class="whitespace-nowrap px-4 py-1.5 bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 text-sm font-medium rounded-full transition-colors">
+                        HR & Admin
+                    </button>
+                </div>
+            </div>
+
+            <div class="px-6 pb-8 max-w-7xl mx-auto w-full flex-1 flex flex-col lg:flex-row gap-6">
+
+                <!-- Left Column: Main Intel Feed -->
+                <div class="flex-1 space-y-4">
+
+                    <!-- HIGH PRIORITY CARD (Action Required) -->
+                    <div
+                        class="intel-card bg-white rounded-xl shadow-sm border border-red-200 overflow-hidden relative">
+                        <div class="absolute left-0 top-0 bottom-0 w-1 bg-red-500"></div>
+                        <div class="p-5 sm:p-6">
+
+                            <div class="flex flex-col sm:flex-row gap-4 sm:gap-6">
+                                <!-- Source Notice Info -->
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <span
+                                            class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-red-100 text-red-700">
+                                            <i class="ph-fill ph-warning-circle"></i> High Priority
+                                        </span>
+                                        <span class="text-xs text-gray-400 font-medium">Exam Controller's Office • 2
+                                            hours ago</span>
+                                    </div>
+                                    <h3 class="text-lg font-bold text-gray-900 leading-tight mb-2">
+                                        Revised Midterm Examination Schedule (Fall 2024)
+                                    </h3>
+                                    <p class="text-sm text-gray-600 line-clamp-2 mb-3">
+                                        Due to unavoidable circumstances, the midterm examination schedule for all
+                                        undergraduate programs has been revised. Please refer to the attached updated
+                                        routine.
+                                    </p>
+                                    <button
+                                        class="text-xs font-medium text-gray-500 hover:text-gray-800 flex items-center gap-1 transition-colors">
+                                        <i class="ph ph-paperclip"></i> View original notice & attachments
+                                    </button>
+                                </div>
+
+                                <!-- AI Analysis Box -->
+                                <div
+                                    class="w-full sm:w-72 bg-gradient-to-br from-red-50 to-orange-50 rounded-lg p-4 border border-red-100 flex flex-col">
+                                    <div class="flex items-center gap-1.5 text-red-800 font-semibold text-sm mb-2">
+                                        <i class="ph-fill ph-sparkle text-red-500 ai-sparkle"></i> FacultyOS Analysis
+                                    </div>
+                                    <p class="text-sm text-gray-800 mb-3 leading-relaxed">
+                                        Your <strong class="font-bold">CSE 2201 Midterm</strong> has been rescheduled to
+                                        <strong class="font-bold">Sep 20, 11:30 AM</strong>.
+                                    </p>
+                                    <div
+                                        class="bg-white/60 rounded p-2 text-xs text-red-700 border border-red-100 mb-4">
+                                        <i class="ph-fill ph-warning"></i> This creates a 30-minute overlap with your
+                                        scheduled <strong>Faculty Meeting</strong>.
+                                    </div>
+
+                                    <div class="mt-auto flex gap-2">
+                                        <button
+                                            class="flex-1 bg-red-600 hover:bg-red-700 text-white text-xs font-medium py-2 px-3 rounded-md shadow-sm transition-colors text-center">
+                                            Resolve Conflict
+                                        </button>
+                                        <button
+                                            class="bg-white border border-red-200 hover:bg-red-50 text-red-700 text-xs font-medium py-2 px-3 rounded-md shadow-sm transition-colors text-center">
+                                            Ignore
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RELEVANT CARD (Academic) -->
+                    <div
+                        class="intel-card bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden relative">
+                        <div class="absolute left-0 top-0 bottom-0 w-1 bg-yellow-400"></div>
+                        <div class="p-5 sm:p-6">
+
+                            <div class="flex flex-col sm:flex-row gap-4 sm:gap-6">
+                                <!-- Source Notice Info -->
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <span
+                                            class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-yellow-100 text-yellow-800">
+                                            <i class="ph-fill ph-calendar-blank"></i> Relevant
+                                        </span>
+                                        <span class="text-xs text-gray-400 font-medium">Registrar's Office •
+                                            Yesterday</span>
+                                    </div>
+                                    <h3 class="text-base font-bold text-gray-900 leading-tight mb-2">
+                                        Updated Academic Calendar for Fall Semester
+                                    </h3>
+                                    <p class="text-sm text-gray-600 line-clamp-2 mb-3">
+                                        The academic calendar has been slightly adjusted to accommodate the upcoming
+                                        national holidays. The final week of classes has been extended by three days.
+                                    </p>
+                                    <button
+                                        class="text-xs font-medium text-gray-500 hover:text-gray-800 flex items-center gap-1 transition-colors">
+                                        <i class="ph ph-link"></i> Open Academic Calendar portal
+                                    </button>
+                                </div>
+
+                                <!-- AI Analysis Box -->
+                                <div
+                                    class="w-full sm:w-72 bg-gradient-to-br from-yellow-50 to-yellow-100/50 rounded-lg p-4 border border-yellow-200 flex flex-col">
+                                    <div class="flex items-center gap-1.5 text-yellow-800 font-semibold text-sm mb-2">
+                                        <i class="ph-fill ph-sparkle text-yellow-600 ai-sparkle"></i> FacultyOS Analysis
+                                    </div>
+                                    <p class="text-sm text-gray-800 mb-3 leading-relaxed">
+                                        The semester extension affects <strong class="font-bold">2 assignment
+                                            deadlines</strong> you planned for the final week.
+                                    </p>
+                                    <div class="mt-auto">
+                                        <button
+                                            class="w-full bg-white border border-yellow-300 hover:bg-yellow-50 text-yellow-800 text-xs font-medium py-2 px-3 rounded-md shadow-sm transition-colors text-center">
+                                            Review Routine Impacts
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- GENERAL CARD (No Action) -->
+                    <div
+                        class="intel-card bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden relative opacity-80 hover:opacity-100">
+                        <div class="absolute left-0 top-0 bottom-0 w-1 bg-gray-300"></div>
+                        <div class="p-5 sm:p-6">
+
+                            <div class="flex flex-col sm:flex-row gap-4 sm:gap-6">
+                                <!-- Source Notice Info -->
+                                <div class="flex-1">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <span
+                                            class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-gray-100 text-gray-600">
+                                            <i class="ph-fill ph-info"></i> General Info
+                                        </span>
+                                        <span class="text-xs text-gray-400 font-medium">Research Cell • Sep 4</span>
+                                    </div>
+                                    <h3 class="text-base font-bold text-gray-900 leading-tight mb-2">
+                                        Call for Proposals: Internal Research Grants 2024-25
+                                    </h3>
+                                    <p class="text-sm text-gray-600 line-clamp-2">
+                                        The university is inviting proposals from faculty members for the annual
+                                        internal research grants. Submissions must be aligned with the university's
+                                        strategic research goals.
+                                    </p>
+                                </div>
+
+                                <!-- AI Analysis Box -->
+                                <div
+                                    class="w-full sm:w-72 bg-gray-50 rounded-lg p-4 border border-gray-200 flex flex-col justify-center">
+                                    <div class="flex items-center gap-1.5 text-gray-500 font-semibold text-sm mb-1">
+                                        <i class="ph-fill ph-sparkle text-gray-400"></i> FacultyOS Analysis
+                                    </div>
+                                    <p class="text-xs text-gray-600">
+                                        No direct schedule impact. Deadline for submission is November 1st.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Load More -->
+                    <div class="pt-4 flex justify-center">
+                        <button class="text-sm font-medium text-gray-500 hover:text-green-700 transition-colors">
+                            Load older intelligence...
+                        </button>
+                    </div>
+
+                </div>
+
+                <!-- Right Column: Context/Stats (Desktop Only) -->
+                <div class="w-full lg:w-80 space-y-6 hidden lg:block shrink-0">
+
+                    <!-- Stats Card -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+                        <h3 class="font-semibold text-gray-800 mb-4 text-sm uppercase tracking-wider">Processing Status
+                        </h3>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between text-xs text-gray-500 mb-1">
+                                    <span>Sync with AUST Board</span>
+                                    <span class="text-green-600 font-medium">Up to date</span>
+                                </div>
+                                <div class="w-full bg-gray-100 rounded-full h-1.5">
+                                    <div class="bg-green-500 h-1.5 rounded-full" style="width: 100%"></div>
+                                </div>
+                                <p class="text-[10px] text-gray-400 mt-1 text-right">Last checked: 2 mins ago</p>
+                            </div>
+                            <div class="pt-3 border-t border-gray-100 flex justify-between items-center">
+                                <span class="text-sm text-gray-600">Total Analyzed (This Month)</span>
+                                <span class="font-bold text-gray-800">42</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">Relevant to you</span>
+                                <span class="font-bold text-green-700">8</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Department Circulars (Unprocessed List) -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-semibold text-gray-800 text-sm">Raw Dept. Circulars</h3>
+                            <button class="text-xs font-medium text-green-700 hover:text-green-800">View All</button>
+                        </div>
+                        <ul class="space-y-3 text-sm divide-y divide-gray-100">
+                            <li class="pt-2 first:pt-0">
+                                <a href="#" class="block hover:bg-gray-50 -mx-2 px-2 py-1 rounded transition-colors">
+                                    <p class="text-gray-800 font-medium line-clamp-1">CSE Dept meeting minutes - August
+                                    </p>
+                                    <p class="text-xs text-gray-400 mt-0.5">Sep 2 • Dept Head</p>
+                                </a>
+                            </li>
+                            <li class="pt-3">
+                                <a href="#" class="block hover:bg-gray-50 -mx-2 px-2 py-1 rounded transition-colors">
+                                    <p class="text-gray-800 font-medium line-clamp-1">Lab equipment maintenance schedule
+                                    </p>
+                                    <p class="text-xs text-gray-400 mt-0.5">Aug 28 • IT Support</p>
+                                </a>
+                            </li>
+                            <li class="pt-3">
+                                <a href="#" class="block hover:bg-gray-50 -mx-2 px-2 py-1 rounded transition-colors">
+                                    <p class="text-gray-800 font-medium line-clamp-1">New TA assignment list for Fall
+                                        2024</p>
+                                    <p class="text-xs text-gray-400 mt-0.5">Aug 25 • Dept Office</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Floating AI Assistant Button -->
+        <button id="aiToggleBtn"
+            class="floating-ai-btn absolute bottom-6 right-6 h-14 w-40 bg-gradient-to-r from-green-700 to-green-800 rounded-full flex items-center justify-center gap-2 text-white shadow-lg cursor-pointer z-50 group hover:pr-4">
+            <i class="ph-fill ph-robot text-2xl group-hover:rotate-12 transition-transform"></i>
+            <span class="font-semibold text-sm">FacultyOS</span>
+            <!-- Notification Dot -->
+            <span class="absolute top-0 right-0 flex h-3 w-3 -mt-1 -mr-1">
+                <span
+                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-3 w-3 bg-yellow-500 border-2 border-green-800"></span>
+            </span>
+        </button>
+
+    </main>
+
+    <!-- AI Assistant Slide-out Panel -->
+    <div id="aiChatPanel"
+        class="ai-chat-panel fixed inset-y-0 right-0 w-full md:w-[400px] bg-white shadow-2xl border-l border-gray-200 z-50 flex flex-col pt-16 md:pt-0">
+
+        <!-- Panel Header -->
+        <div class="h-16 border-b border-gray-100 flex items-center justify-between px-5 bg-gray-50/50 shrink-0">
+            <div class="flex items-center gap-3">
+                <div class="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center text-green-700">
+                    <i class="ph-fill ph-robot text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="font-bold text-gray-800 leading-none">FacultyOS</h2>
+                    <p
+                        class="text-[10px] text-green-600 font-medium flex items-center gap-1 uppercase tracking-wider mt-1">
+                        <span class="h-1.5 w-1.5 rounded-full bg-green-500 inline-block"></span> Online
+                    </p>
+                </div>
+            </div>
+            <button id="closeAiBtn"
+                class="text-gray-400 hover:text-gray-600 p-1.5 rounded-md hover:bg-gray-100 transition-colors">
+                <i class="ph ph-x text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Chat Area -->
+        <div class="flex-1 overflow-y-auto p-4 space-y-4 bg-white">
+
+            <!-- Contextual AI Welcome Message (Intel Focused) -->
+            <div class="flex gap-3">
+                <div
+                    class="h-6 w-6 rounded-full bg-green-100 flex items-center justify-center text-green-700 shrink-0 mt-1">
+                    <i class="ph-fill ph-robot text-xs"></i>
+                </div>
+                <div
+                    class="bg-gray-50 rounded-2xl rounded-tl-none px-4 py-3 text-sm text-gray-700 border border-gray-100 max-w-[85%]">
+                    <p>I have processed all recent notices from the AUST notice board.</p>
+                    <p class="mt-2 text-xs text-gray-500">I flagged the <strong>Midterm Reschedule</strong> notice
+                        because it creates a direct conflict with your calendar. Would you like me to draft an email to
+                        the Exam Controller, or automatically reschedule your meeting?</p>
+                </div>
+            </div>
+
+            <!-- Suggested Prompts -->
+            <div class="pl-9 pr-4 flex flex-wrap gap-2">
+                <button
+                    class="text-xs px-3 py-1.5 bg-white border border-gray-200 rounded-full text-gray-600 hover:border-green-300 hover:text-green-700 transition-colors shadow-sm">Reschedule
+                    the meeting</button>
+                <button
+                    class="text-xs px-3 py-1.5 bg-white border border-gray-200 rounded-full text-gray-600 hover:border-green-300 hover:text-green-700 transition-colors shadow-sm">Did
+                    I miss any notices last week?</button>
+                <button
+                    class="text-xs px-3 py-1.5 bg-white border border-gray-200 rounded-full text-gray-600 hover:border-green-300 hover:text-green-700 transition-colors shadow-sm">Summarize
+                    the research grant criteria</button>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="p-4 border-t border-gray-100 bg-white shrink-0 pb-6">
+            <div class="relative flex items-end gap-2">
+                <div class="relative flex-1">
+                    <textarea rows="1"
+                        class="w-full bg-gray-50 border border-gray-200 rounded-xl pl-4 pr-10 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500 resize-none max-h-32"
+                        placeholder="Ask about notices or your schedule..." style="min-height: 44px;"></textarea>
+                    <button class="absolute right-2 bottom-2 text-gray-400 hover:text-gray-600 p-1">
+                        <i class="ph ph-microphone text-lg"></i>
+                    </button>
+                </div>
+                <button
+                    class="h-[44px] w-[44px] rounded-xl bg-green-700 text-white flex items-center justify-center hover:bg-green-800 transition-colors shrink-0 shadow-sm">
+                    <i class="ph-fill ph-paper-plane-right text-lg"></i>
+                </button>
+            </div>
+            <p class="text-center text-[10px] text-gray-400 mt-2">FacultyOS uses your university data to provide
+                answers.</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const aiToggleBtn = document.getElementById('aiToggleBtn');
+            const closeAiBtn = document.getElementById('closeAiBtn');
+            const aiChatPanel = document.getElementById('aiChatPanel');
+
+            // Toggle AI Panel
+            function toggleAiPanel() {
+                aiChatPanel.classList.toggle('open');
+                // Hide notification dot on first open
+                const dot = aiToggleBtn.querySelector('.absolute.top-0');
+                if (dot) dot.style.display = 'none';
+            }
+
+            aiToggleBtn.addEventListener('click', toggleAiPanel);
+            closeAiBtn.addEventListener('click', toggleAiPanel);
+
+            // Auto-resize textarea
+            const textarea = document.querySelector('textarea');
+            textarea.addEventListener('input', function () {
+                this.style.height = '44px'; // Reset
+                this.style.height = (this.scrollHeight) + 'px';
+            });
+        });
+    </script>
+</body>
+
+</html>
